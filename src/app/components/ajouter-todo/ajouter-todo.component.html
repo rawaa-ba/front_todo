@@ -1,0 +1,17 @@
+<app-navbar></app-navbar>
+<div class="container mt-5">
+    <form [formGroup]="ajouterForm" (ngSubmit)="ajouter()">
+        <div class="form-group">
+            <h3>Déscription</h3>
+            <label for="formGroupExampleInput"></label>
+            <input type="text" class="form-control" id="formGroupExampleInput" name="description"
+                formControlName="description" placeholder="Todo ?">
+            <div *ngIf="description.touched && description.invalid" class="form-text text-danger text-sm">
+                <div *ngIf="description.errors.required"> To do? </div>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary" [disabled]="ajouterForm.invalid">Ajouter</button>
+
+    </form>
+</div>
+<app-footer></app-footer>
