@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { TodoService } from 'src/app/services/todo.service';
+import { JwtHelperService } from "@auth0/angular-jwt";
+import { Router } from '@angular/router';
+import { ToDo } from 'src/app/models/to-do';
 
 @Component({
   selector: 'app-todo-list',
@@ -6,52 +10,56 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./todo-list.component.css']
 })
 export class TodoListComponent implements OnInit {
+    
+   todoList = [] 
+  doneList = []
+  
+  constructor(private todoService:TodoService , private router:Router) { }
 
-  todoList = [
-    {
-      description: "Terminer cours bootstrap 4",
-      dateAjout: "09 / 11 / 2019",
-    } ,
-    {
-      description: "Faire un nouveau projet angular",
-      dateAjout: "09 / 11 / 2019"
-    },
-    {
-      description: "Integration Template",
-      dateAjout: "09 / 11 / 2019"
-    }
-  ] 
-  doneList=[
-    {
-      description:"Terminer cours Html",
-      dateAjout:"09 / 11 / 2019",
-      dateFin:"09 / 11 / 2019"
-    },
-    {
-      description:"Terminer cours Css",
-      dateAjout:"09 / 11 / 2019",
-      dateFin:"09 / 11 / 2019"
-    },
-    {
-      description:"Terminer cour js",
-      dateAjout:"09 / 11 / 2019",
-      dateFin:"09 / 11 / 2019"
-    }
-  ]
-  constructor() { }
-
-  ngOnInit() {
+  ngOnInit() { 
+    const helper = new JwtHelperService();
+    let token = localStorage.getItem('token');
+    const decodedToken = helper.decodeToken(token);
+    let idUser = decodedToken.idUser ;
+    this.todoService.getAllTodos(idUser).subscribe(
+      (result)=>{
+        console.log(result);
+        this.todoList=result.todoList;
+        this.doneList=result.doneList;
+      },
+      (error)=>{
+        console.log(error);        
+      }
+    )
   }
 
-  deleteTodo(i: number) {
-    this.todoList.splice(i,1)
+
+  deleteTodo(i:number,_id,todo) {
+  
+    this.todoService.supprimerTodo(_id,todo).subscribe(
+      (result)=>{
+      console.log(result);
+      
+    },(erreur)=>{
+      console.log(erreur);
+    })
   }
-  deleteDone(i: number){
-    this.doneList.splice(i,1)
+  deleteDone(i: number,todo) {
+    let id = this.doneList[i]._id;
+    this.todoService.supprimerDone(todo).subscribe((result)=>{
+      console.log(result);
+    },(erreur)=>{
+      console.log(erreur);
+    })
   }
-  terminerTodo(i:number,todo){
-    this.todoList.splice(i,1)  
-    todo.dateFin="10/12/2019"
-    this.doneList.push(todo)
+  terminerTodo(i: number, todo) {
+    this.todoService.terminer(todo).subscribe((result)=>{
+      console.log(result);
+    },(erreur)=>{
+      console.log(erreur);
+    })
   }
+ 
+
+
 }

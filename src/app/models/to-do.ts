@@ -4,9 +4,7 @@ export class ToDo {
         private _description?:String,
         private _dateAjout?:String,
         private _dateFin?:String,
-        private _idUser?:String
-
-    ){}
+        private _idUser?:String) { }
 
     get id (){return this._id ;}
     set id (value){ this._id=value ;}

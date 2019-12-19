@@ -15,6 +15,7 @@ import { AjouterTodoComponent } from './components/ajouter-todo/ajouter-todo.com
 import { ModifierTodoComponent } from './components/modifier-todo/modifier-todo.component'
 import { UserService } from './services/user.service';
 import {HttpClientModule} from '@angular/common/http';
+import { TodoService } from './services/todo.service';
 @NgModule({
   declarations: [
     AppComponent,
@@ -35,7 +36,8 @@ import {HttpClientModule} from '@angular/common/http';
     HttpClientModule
   ],
   providers: [
-    UserService
+    UserService,
+    TodoService
   ],
   bootstrap: [AppComponent]
 })
